@@ -1,22 +1,22 @@
 <section>
     <div class="container mt-5">
-        <form>
+        <form action="/admin/addproduct" enctype="multipart/form-data" method="post">
             <h1>Add Product</h1>
             <div class="form-group">
-                <label>Name Of Product</label>
-                <input type="text" class="form-control">
+                <label for="">Name Of Product</label>
+                <input type="text" name="Name" class="form-control">
             </div>
             <div class="form-group">
-                <label>Catogary</label>
-                <input type="text" class="form-control">
+                <label for="">Catogary</label>
+                <input type="text" name="Catogary" class="form-control">
             </div>
             <div class="form-group">
-                <label>Price</label>
-                <input type="text" class="form-control">
+                <label for="">Price</label>
+                <input type="text" name="Price" class="form-control">
             </div>
             <div class="form-group">
-                <label>Image</label>
-                <input type="file" class="form-control">
+                <label for="">Image</label>
+                <input type="file" class="form-control" name="Image">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
     </div>

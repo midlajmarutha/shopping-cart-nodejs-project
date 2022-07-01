@@ -6,6 +6,8 @@ var logger = require('morgan');
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 var hbs=require('express-handlebars')
+var fileUpload=require('express-fileupload') //to take file from forms
+var db=require('./config/connection')
 
 
 var app = express();
@@ -14,12 +16,19 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialDir:__dirname+'/views/partials/'}))
-
+app.use(fileUpload())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+db.connect((err)=>{
+  if(err){
+    console.log('Connection Failed'+err)
+  }else{
+    console.log('Database connected');
+  }
+})
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
