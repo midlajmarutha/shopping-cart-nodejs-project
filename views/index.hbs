@@ -5,11 +5,11 @@
                 {{#each products}}
                 <div class="col-md-3">
                     <div class="card" style="width: 15rem;">
-                        <img class="card-img-top" src="{{this.image}}"alt="Card image cap">
+                        <img class="card-img-top" src="/productimages/{{this._id}}.png"alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">{{this.name}}</h5>
-                            <p class="card-text">{{this.catogary}}</p>
-                            <p class="card-text text-danger">Rs.{{this.price}}</p>
+                            <h5 class="card-title">{{this.Name}}</h5>
+                            <p class="card-text">{{this.Catogary}}</p>
+                            <p class="card-text text-danger">Rs.{{this.Price}}</p>
                             <a href="#" class="btn btn-primary">Add to cart</a>
                         </div>
                     </div>

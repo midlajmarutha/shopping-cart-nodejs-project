@@ -1,41 +1,51 @@
 var express = require('express');
 var router = express.Router();
-
+const productHelper = require('../helpers/product-helpers')
+const userHelper = require('../helpers/user-helpers')
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  let user=req.session.user
+  console.log(user);
   // sample products info backend
-
-  let products=[
-    {
-      name:'GeForce RTX 3060',
-      catogary:'Graphics card',
-      image:'https://m.media-amazon.com/images/I/91g6nUHsCLL._SL1500_.jpg',
-      price:'125999'
-  
-    }, 
-    {
-      name:'GeForce GTX 1070',
-      catogary:'Graphics card',
-      image:'https://5.imimg.com/data5/IV/PC/MY-35935661/amd-and-nvidia-graphic-card-for-gaming-and-workstation-500x500.png',
-      price:'125999'
-  
-    },
-    {
-      name:'GeForce RTX 3060Ti',
-      catogary:'Graphics card',
-      image:'https://5.imimg.com/data5/IV/PC/MY-35935661/amd-and-nvidia-graphic-card-for-gaming-and-workstation-500x500.png',
-      price:'125999'
-  
-    },
-    {
-      name:'GeForce GTX 1050Ti',
-      catogary:'Graphics card',
-      image:'https://5.imimg.com/data5/IV/PC/MY-35935661/amd-and-nvidia-graphic-card-for-gaming-and-workstation-500x500.png',
-      price:'125999'
-  
-    }
-  ]
-  res.render('index', {products,admin:false});       //admin verificartion result dummy backend 
+  productHelper.getAllProducts().then((products)=>{
+    res.render('index', {products,admin:false,user});   //admin verificartion result dummy backend 
+  })
+       
 });
+router.get('/login',(req,res)=>{
+  res.render('user/login')
+})
+router.get('/signup',(req,res)=>{
+  res.render('user/signup')
+})
+
+router.post('/signup',(req,res)=>{
+  userHelper.userSignup(req.body).then((response)=>{
+    console.log(response);
+  })
+})
+router.post('/login',(req,res)=>{
+  userHelper.doLogin(req.body).then((response)=>{
+    if(response.adminStatus){
+      req.session.adminLoggedIn=true
+      req.session.admin=response.admindata
+      res.redirect('/admin')
+
+    }
+    else if(response.status){
+      req.session.loggedIn=true
+      req.session.user=response.user
+      res.redirect('/')
+    }else{
+      res.redirect('/login')
+    }
+
+  })
+
+})
+router.get('/logout',(req,res)=>{
+  req.session.destroy()
+  res.redirect('/')
+})
 
 module.exports = router;

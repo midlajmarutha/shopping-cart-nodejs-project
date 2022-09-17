@@ -8,6 +8,7 @@ var adminRouter = require('./routes/admin');
 var hbs=require('express-handlebars')
 var fileUpload=require('express-fileupload') //to take file from forms
 var db=require('./config/connection')
+const session=require('express-session')
 
 
 var app = express();
@@ -29,7 +30,7 @@ db.connect((err)=>{
     console.log('Database connected');
   }
 })
-
+app.use(session({secret:'secretkey',cookie:{maxAge:600000}}))
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 
