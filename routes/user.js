@@ -1,4 +1,5 @@
 var express = require('express');
+const session = require('express-session');
 var router = express.Router();
 const productHelper = require('../helpers/product-helpers')
 const userHelper = require('../helpers/user-helpers')
@@ -28,6 +29,10 @@ router.get('/signup',(req,res)=>{
 router.post('/signup',(req,res)=>{
   userHelper.userSignup(req.body).then((response)=>{
     console.log(response);
+    req.session.loggedIn=true
+    req.session.user=response
+    res.redirect('/')
+    
   })
 })
 router.post('/login',(req,res)=>{
