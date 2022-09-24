@@ -36,6 +36,7 @@ router.post('/signup',(req,res)=>{
   })
 })
 router.post('/login',(req,res)=>{
+  let time = new Date()
   userHelper.doLogin(req.body).then((response)=>{
     if(response.adminStatus){
       req.session.adminLoggedIn=true
@@ -53,6 +54,7 @@ router.post('/login',(req,res)=>{
     }
 
   })
+  console.log(new Date()- time);
 
 })
 router.get('/logout',(req,res)=>{
