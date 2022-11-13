@@ -14,15 +14,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Cart</a>
                 </li>
+                {{#if user}}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Orders</a>
                 </li>
+                {{/if}}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Best sellers</a>
                 </li>
             </ul>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{#if user}}
                         {{user.Username}}
@@ -30,7 +32,7 @@
                         LOGIN
                     {{/if}}
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu" style="min-width: 0;" aria-labelledby="dropdownMenuButton">
                     {{#if user}}
                     <a class="dropdown-item" href="/logout">logout</a>
                     {{else}}

@@ -4,6 +4,7 @@ const bcrypt=require('bcrypt');
 const { resolve, reject } = require('promise');
 const async = require('hbs/lib/async');
 const { response } = require('express');
+const objectId=require('mongodb').ObjectId
 
 
 module.exports={
@@ -19,5 +20,10 @@ module.exports={
         })
 
 
+    },
+    deleteUser:(userId)=>{
+        db.get().collection(collections.USER_COLLECTION).deleteOne({_id:objectId(userId)}).then((res)=>{
+            resolve(res)
+        })
     }
 }

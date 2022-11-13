@@ -8,12 +8,25 @@ const objectId= require('mongodb').ObjectId
 module.exports={
     userSignup:(userdata)=>{
         console.log(userdata);
+        let responseData={}
         return new Promise(async (resolve,reject)=>{
-            userdata.Password= await bcrypt.hash(userdata.Password,10)
-            db.get().collection(collections.USER_COLLECTION).insertOne(userdata).then(async(data)=>{
+            let existingUser=await db.get().collection(collections.USER_COLLECTION).findOne({Email:userdata.Email})
+            if(existingUser){
+                console.log('signup failed');
+                responseData.status=false
+                responseData.err='This account already exists,Please login';
+                resolve(responseData)
+
+            }else{
+                userdata.Password= await bcrypt.hash(userdata.Password,10)
+                db.get().collection(collections.USER_COLLECTION).insertOne(userdata).then(async(data)=>{
                 data=await db.get().collection(collections.USER_COLLECTION).findOne({_id:data.insertedId})
-                resolve(data)
+                responseData.status=true;
+                responseData.userdata=data;
+                resolve(responseData)
             })
+            }
+            
                 
 
         })
@@ -59,6 +72,11 @@ module.exports={
                 resolve({status:false})
             }
 
+        })
+    },fetchUsers:()=>{
+        return new Promise (async(resolve,reject)=>{
+            let users=await db.get().collection(collections.USER_COLLECTION).find().toArray()
+            resolve(users)
         })
     }
 }

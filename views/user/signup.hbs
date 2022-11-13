@@ -2,8 +2,11 @@
 
     <form class="col-md-8 m-auto" action="/signup" method="post">
         <div class="mt-5">
+            
         <div class="form-group text-center"><h1>SIGNUP</h1></div>
-
+        {{#if err}}
+            <p class="text-danger">{{err}}</p>
+            {{/if}}
         <div class="form-group">
             <label for="exampleInputEmail1">Username</label>
             <input type="text" name="Username" class="form-control"

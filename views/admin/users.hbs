@@ -1,0 +1,36 @@
+<section>
+    <div class="container">
+        <div class="row mt-3">
+           <a href="admin/addproduct" class="btn btn-primary ml-auto">Add Products</a>
+        </div>
+    </div>
+    <table class="table mt-3">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Id Of User</th>
+      <th scope="col">Username</th>
+      <th scope="col">Email</th>
+      <th scope="col">Image</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">1</th>
+      <td>{{this._id}}</td>
+      <td>{{this.Username}}</td>
+      <td>{{this.Email}}</td>
+      <td><img src="" alt="" style="height: 50px; width: auto;"></td>
+      <td>
+      <a href="/admin/users/delete-user/{{this._id}}" class="btn btn-danger" onclick="return confirm('Do you want to delete {{this.Name}}')">Remove</a>
+      </td>
+
+      
+    </tr>
+    {{/each}}
+
+    
+</table>
+</section>
