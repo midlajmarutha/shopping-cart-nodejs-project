@@ -22,7 +22,7 @@ module.exports={
                 db.get().collection(collections.USER_COLLECTION).insertOne(userdata).then(async(data)=>{
                 data=await db.get().collection(collections.USER_COLLECTION).findOne({_id:data.insertedId})
                 responseData.status=true;
-                responseData.userdata=data;
+                responseData.user=data;
                 resolve(responseData)
             })
             }

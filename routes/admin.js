@@ -60,9 +60,9 @@ router.post('/addproduct', function (req, res) {
     let image=req.files.Image;
     image.mv('./public/productImages/productimages-original/'+id+'.png',(err,done)=>{
       if(!err){
-        res.redirect('/admin');
         sharp('./public/productImages/productimages-original/'+id+'.png').resize(300).png({quality:50}).toFile('./public/productImages/w300/'+id+'.png')
         sharp('./public/productImages/productimages-original/'+id+'.png').resize(500).png({quality:50}).toFile('./public/productImages/w500/'+id+'.png')
+        res.redirect('/admin');
       }else console.log(err);
     })
 
@@ -74,13 +74,12 @@ router.get('/deleteproduct/:id',(req,res)=>{
      let id=req.params.id
      console.log(id);
      productHelper.deleteProducts(id).then((response)=>{
-
       res.redirect('/admin')
     
      })
    })
 router.get('/editproduct/:id',async (req,res)=>{
-  let product=await productHelper.editProducts(req.params.id)
+  let product=await productHelper.findProducts(req.params.id)
   console.log(product);
   res.render('admin/edit-product',{product})
 })
@@ -96,8 +95,10 @@ router.get('/users',(req,res)=>{
 })
 router.get('/users/delete-user/:id',(req,res)=>{
   let id=req.params.id
-  adminHelper.deleteUser(id).then((response)=>{
-    res.redirect('admin/users')
-  })
+  if (req.session.admin) {
+    adminHelper.deleteUser(id).then((response)=>{
+      res.redirect('admin/users')
+    })
+  }else res.redirect('/login')
 })
 module.exports = router;

@@ -1,0 +1,50 @@
+<section style="height: 100vh;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 imagecap">
+                <img src="/productimages/w500/{{Product._id}}.png" alt="">
+            </div>
+            <div class="col-md-6" style="padding-top: 5rem;">
+                <h2>{{Product.Name}}</h2>
+                <h5 class="text-danger">RS.{{Product.Price}}</h5>
+                <p>{{Product.Catogary}}</p>
+                <p>{{Product.Description}}</p>
+                <div class="row">
+                    <a href="" class="btn col-md-5 btn-primary">Add To Cart</a>
+                    <a href="" class="btn col-md-5 btn-success ml-1">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="margin-top: 10em;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" style="overflow-y: scroll; max-height: 50vh;">
+                <h1>Comments</h1>
+                {{#each Product.Comments}}
+                <div class="card pl-2" >
+                    <h5 style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: bold; color: gray;">{{this.user}}</h5>
+                    <h6>{{this.datetime}}</h6>
+                    <p>{{this.Comment}}</p>
+                </div>
+                {{/each}}
+                
+            </div>
+            <div class="col-md-6" style="padding-top: 5rem;">
+                <form action="./new-comment?id={{Product._id}}" enctype="multipart/form-data" method="post">
+                    
+                    <div class="form-group">
+                        <label for="">Add Comment</label>
+                        <input type="text" name="Comment" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Comment</button>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</section>

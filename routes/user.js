@@ -1,5 +1,6 @@
 var express = require('express');
 const session = require('express-session');
+const async = require('hbs/lib/async');
 var router = express.Router();
 const productHelper = require('../helpers/product-helpers')
 const userHelper = require('../helpers/user-helpers')
@@ -48,10 +49,10 @@ router.post('/signup',(req,res)=>{
   })
 })
 router.post('/login',(req,res)=>{
-  let time = new Date()
   userHelper.doLogin(req.body).then((response)=>{
     if(response.adminStatus){
       req.session.adminLoggedIn=true
+      req.session.loggedIn=true
       req.session.admin=response.admindata
       res.redirect('/admin')
 
@@ -66,12 +67,34 @@ router.post('/login',(req,res)=>{
     }
 
   })
-  console.log(new Date()- time);
+
 
 })
 router.get('/logout',(req,res)=>{
   req.session.destroy()
   res.redirect('/')
 })
+
+router.get('/products/:id',async (req,res)=>{
+  let Product=await productHelper.findProducts(req.params.id)
+  console.log(Product);
+  res.render('user/product-full',{Product})
+  
+  })
+
+router.post('/products/new-comment/',(req,res)=>{
+  let id= req.query.id
+  let comment=req.body
+  comment.id=id
+  comment.user=req.session.user.Username
+  comment.datetime=new Date()
+  console.log(comment);
+  productHelper.addNewComment(comment).then((response)=>{
+    res.redirect(`/products/`)
+  })
+  
+})
+
+
 
 module.exports = router; 

@@ -29,16 +29,41 @@ module.exports={
             })
         })
     },
-    editProducts:(productId)=>{
+    findProducts:(productId)=>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.PRODUCTS_COLLECTION).findOne({_id:objectId(productId)}).then((res)=>{
                 console.log(res);
                 resolve(res)
+               
+
+      
+           })
+        })
+        
+    },
+    addNewComment:(commentData)=>{
+        return new Promise (async (resolve,reject)=>{
+            let product= await db.get().collection(collections.PRODUCTS_COLLECTION).findOne({_id:objectId(commentData.id)})
+            //console.log(product)
+            if (!product.Comments){
+
+                db.get().collection(collections.PRODUCTS_COLLECTION).updateOne({_id:objectId(commentData.id)},{$set:{Comments:[commentData]}})
+            }else{
+                db.get().collection(collections.PRODUCTS_COLLECTION).updateOne({_id:objectId(commentData.id)},{$push:{Comments:commentData}})
+            }
+
+
                 
-            
-            })
         })
     },
+   ///getComments:(proid)=>{
+   ///    return new Promise(async(resolve,reject)=>{
+
+   ///        let comments=await db.get().collections(collections.COMMENT_COLLECTIONS).findMany({id:proid}).toArray()
+
+   ///        resolve(comments)
+   ///    })
+   ///}
     ///updateProduct:(product)=>{
     ///    return new Promise((resolve,reject)=>{
     ///        db.get().collection(collections.PRODUCTS_COLLECTION).updateOne()
