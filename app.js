@@ -30,15 +30,28 @@ db.connect((err)=>{
     console.log('Database connected');
   }
 })
+
+const findAdminStatus = (req, res, next) => {
+  let adminStatus = req.session.adminLoggedIn
+  if (adminStatus) {
+
+    next()
+    return admin = req.session.admin
+  } else {
+    res.redirect('/login')
+  }
+  
+}
+ 
 app.use(session({secret:'secretkey',cookie:{maxAge:600000}}))
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+ next(createError(404));
 });
-
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -49,5 +62,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 module.exports = app;

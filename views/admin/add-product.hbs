@@ -4,21 +4,52 @@
             <h1>Add Product</h1>
             <div class="form-group">
                 <label for="">Name Of Product</label>
-                <input type="text" name="Name" class="form-control">
+                <input type="text" name="Name" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="">Catogary</label>
-                <input type="text" name="Catogary" class="form-control">
+                <input type="text" name="Catogary" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="">Price</label>
-                <input type="text" name="Price" class="form-control">
+                <input type="text" name="Price" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="">Image</label>
-                <input type="file" class="form-control" name="Image">
+                <div data-input-field>
+                    <input type="file" class="form-control" name="Image" required>
+                </div>
+
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <div class="btn btn-outline-dark ml-4" style="border-radius: 50%;" onclick="addNewImage()">&plus;</div>
+            <div class="form-group text-center float-right">
+                <button type="submit" class="btn btn-dark" style="border-radius: 20px;">Submit</button>
+            </div>
     </div>
     </form>
+    <template data-add-input>
+        <div class="form-group" data-input style="display: flex; margin-top: 1rem;">
+            <input type="file" class="form-control col-10" name="Image" required>
+            <button class="btn btn-outline-danger ml-2" data-remove-btn>Remove</button>
+        </div>
+    </template>
+
 </section>
+<script>
+
+    const input = document.querySelector('[data-add-input]')
+    const inputField = document.querySelector('[data-input-field]')
+
+    function addNewImage() {
+        inputField.append(createInput())
+        function createInput() {
+            const element = input.content.cloneNode(true)
+            element.querySelector('[data-remove-btn]').addEventListener('click', (e) => {
+                e.target.closest('[data-input]').remove()
+            })
+            return element
+        }
+
+    }
+</script>

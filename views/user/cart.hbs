@@ -1,0 +1,46 @@
+<section>
+    <table class="table mt-3">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Name Of Product</th>
+      <th scope="col">Catogary</th>
+      <th scope="col">Price</th>
+      <th scope="col">Image</th>
+      <th scope="col">Quantity</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+      {{#each cart_products}}
+    <tr>
+      <th scope="row">{{@index}}</th>
+      <td>{{this.Name}}</td>
+      <td>{{this.Catogary}}</td>
+      <td>{{this.Price}}</td>
+      <td><img src="/productimages/w300/{{this._id}}_0.png" alt="" style="height: 50px; width: auto;"></td>
+      <td>
+        <button href="" class="btn btn-dark" onclick="increaseQuantity()">+</button>
+        <input type="number" value={{this.Quantity}} id="quantity" >
+        <button href="" class="btn btn-dark" onclick="decreaseQuantity()" >-</button>
+      </td>
+      <td>
+        <a href="/admin/deleteproduct/{{this._id}}" class="btn btn-outline-dark" style="border-radius: 20px;">Place Order Now</a>
+        <a href="/admin/deleteproduct/{{this._id}}" class="btn btn-dark" style="border: 1px solid black;border-radius: 20px;" onclick="return confirm('Do you want to delete {{this.Name}}')">Delete</a>
+      </td>
+
+      
+    </tr>
+    {{/each}}
+    
+</table>
+</section>
+<script>
+    
+    
+    function increaseQuantity(){
+        var quantity = document.getElementById('quantity').value
+        console.log(quantity)
+        document.getElementById('quantity').value = quantity
+    }
+</script>

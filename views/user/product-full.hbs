@@ -1,9 +1,23 @@
-<section style="height: 100vh;">
+<section style="min-height: 90vh;">
 
     <div class="container">
         <div class="row">
             <div class="col-md-6 imagecap">
-                <img src="/productimages/w500/{{Product._id}}.png" alt="">
+                <img src="/productimages/w500/{{Product._id}}_0.png" style="max-width: 100%;" alt="" id="main_image">
+                <div class="image-options" style="display: flex; align-items: center; justify-content: space-between; margin-top: 2em;">
+                    <div class="arrow-left">
+                        <img src="/images/arrow-left.svg" alt="" style="width: 30px;">
+                        
+                    </div>
+                    <div class="images">
+                        {{#each Product.Images}}
+                        <img src="/productimages/w200/{{this}}" alt="" style="max-width: 50px;" id="{{this}}" onclick="(changeImage(event))">
+                        {{/each}}
+                    </div>
+                    <div class="arrow-right">
+                        <img src="/images/arrow-right.svg" alt="" style="width: 30px;">
+                    </div>
+                </div>
             </div>
             <div class="col-md-6" style="padding-top: 5rem;">
                 <h2>{{Product.Name}}</h2>
@@ -11,17 +25,17 @@
                 <p>{{Product.Catogary}}</p>
                 <p>{{Product.Description}}</p>
                 <div class="row">
-                    <a href="" class="btn col-md-5 btn-primary">Add To Cart</a>
-                    <a href="" class="btn col-md-5 btn-success ml-1">Buy Now</a>
+                    <a href="/addtocart/{{Product._id}}" class="btn col-md-5 btn-dark" style="border-radius: 20px;">Add To Cart</a>
+                    <a href="" class="btn col-md-5 btn-light ml-1" style="border: 1px solid black; border-radius: 20px;">Buy Now</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<section style="margin-top: 10em;">
+<section style=" position: static;">
 
     <div class="container">
-        <div class="row">
+        <div class="row pt-3">
             <div class="col-md-6" style="overflow-y: scroll; max-height: 50vh;">
                 <h1>Comments</h1>
                 {{#each Product.Comments}}
@@ -41,10 +55,19 @@
                         <input type="text" name="Comment" class="form-control" required>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Comment</button>
+                    <button type="submit" class="btn btn-dark" style="border-radius: 20px;">Comment</button>
             </div>
             </form>
         </div>
     </div>
     </div>
 </section>
+<script> 
+    function changeImage(image){
+        console.log(image);
+        let id = image.target.id;
+        document.getElementById('main_image').src = `/productimages/w500/${id}`;
+        document.getElementById(`${id}`).style = "max-width: 50px; border: 1px solid black;"
+        
+    }
+</script>

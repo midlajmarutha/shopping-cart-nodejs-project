@@ -14,11 +14,17 @@
                 <label for="">Price</label>
                 <input type="text" name="Price" class="form-control" value="{{product.Price}}">
             </div>
+            <img src="/productimages/w300/{{product._id}}.png" alt="" id="image" style="max-width: 70px;">
             <div class="form-group">
                 <label for="">Image</label>
-                <input type="file" class="form-control" name="Image">
+                <input type="file" class="form-control" name="Image" onchange="changeImage(event)">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
     </div>
     </form>
 </section>
+<script>
+    function changeImage(event){
+        document.getElementById("image").src = URL.createObjectURL(event.target.files[0])
+    }
+</script>

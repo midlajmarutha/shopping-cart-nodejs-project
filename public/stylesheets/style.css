@@ -1,0 +1,8 @@
+.btn-dark{
+    background-color: black;
+    color: white;
+    border: none;
+}
+.btn-dark:hover{
+    background-color: #343a40;
+}

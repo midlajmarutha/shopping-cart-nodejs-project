@@ -3,6 +3,7 @@ const collections=require('../config/collections');
 const bcrypt=require('bcrypt');
 const async = require('hbs/lib/async');
 const { resolve, reject } = require('promise');
+const { use } = require('bcrypt/promises');
 const objectId= require('mongodb').ObjectId
 
 module.exports={
@@ -77,6 +78,20 @@ module.exports={
         return new Promise (async(resolve,reject)=>{
             let users=await db.get().collection(collections.USER_COLLECTION).find().toArray()
             resolve(users)
+        })
+    },
+    addToCart:(prodId,userId)=>{
+        return new Promise (async(resolve,reject)=>{
+            console.log(prodId,userId)
+            
+            
+            let user = await db.get().collection(collections.USER_COLLECTION).findOne({_id:objectId(userId)})
+            if(!user.Cart){
+            db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(userId)},{$set:{Cart:[objectId(prodId)]}})
+
+            }else{ 
+            db.get().collection(collections.USER_COLLECTION).updateOne({_id:objectId(userId)},{$push:{Cart:objectId(prodId)}})
+            }
         })
     }
 }

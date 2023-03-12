@@ -3,14 +3,24 @@ var db=require('../config/connection')
 var objectId=require('mongodb').ObjectId
 const collections=require('../config/collections');
 const async = require('hbs/lib/async');
+const { promise } = require('bcrypt/promises');
 module.exports={
-    addProduct:(product,callback)=>{
+    addProduct:(product,image_arr_len,callback)=>{
         console.log(product)
+        let images=[]
+        
         db.get().collection('products').insertOne(product).then((data)=>{
-            console.log(data.insertedId);
+            let id = data.insertedId
             //console.log(id);
-            callback(data.insertedId)
+
+            callback(id)
             
+            for (let index = 0; index < image_arr_len; index++) {
+                images.push(id + '_'+index+'.png')
+                console.log(images)
+                
+            }
+            db.get().collection(collections.PRODUCTS_COLLECTION).updateOne({_id:objectId(id)},{$set:{Images:images}})
         })
     },
     getAllProducts:()=>{
@@ -56,6 +66,32 @@ module.exports={
                 
         })
     },
+    getCartProducts:(userid)=>{
+        console.log(userid)
+        return new Promise (async(resolve,reject)=>{
+            let cart_products = await db.get().collection(collections.USER_COLLECTION).aggregate([
+                {
+                    $match:{_id:objectId(userid)}
+                },{
+                    $lookup:{
+                        from:collections.PRODUCTS_COLLECTION,
+                        let:{productList:'$Cart'},
+                        pipeline:[
+                            { 
+                                $match:{
+                                    $expr:{
+                                        $in:['$_id','$$productList']
+                                    }
+                                }
+                            }
+                        ],
+                        as:'cartItems'
+                    }
+                }
+            ]).toArray()
+            console.log(cart_products)
+        })
+    }
    ///getComments:(proid)=>{
    ///    return new Promise(async(resolve,reject)=>{
 

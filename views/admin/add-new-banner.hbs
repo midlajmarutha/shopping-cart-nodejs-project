@@ -1,0 +1,36 @@
+<style>
+    :root{
+        --dark:black;
+    }
+</style>
+
+<section>
+    <div class="container mt-5">
+        <form action="/admin/addproduct" enctype="multipart/form-data" method="post">
+            <h1>Add Banner</h1>
+            <div class="form-group">
+                <label for="">Name Of Product</label>
+                <input type="text" name="Name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Catogary</label>
+                <input type="text" name="Catogary" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Offer</label>
+                <input type="text" name="Offer" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Price</label>
+                <input type="text" name="Price" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Image</label>
+                        <input type="file" class="form-control" name="Image">
+            </div>
+            <div class="form-group text-center float-right">
+                <button type="submit" class="btn btn-dark" style="border-radius: 20px;">Submit</button>
+            </div>
+    </div>
+    </form>
+</section>

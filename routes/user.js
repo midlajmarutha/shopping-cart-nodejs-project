@@ -5,17 +5,26 @@ var router = express.Router();
 const productHelper = require('../helpers/product-helpers')
 const userHelper = require('../helpers/user-helpers')
 /* GET home page. */
+function usercheck(req,res,next){
+  if (req.session.loggedIn) {
+    next()
+  }else{
+    res.redirect('/login')
+  }
+}
 router.get('/', function(req, res, next) {
+  console.log(req.session)
   let user=req.session.user
   console.log(user);
   // sample products info backend
   productHelper.getAllProducts().then((products)=>{
-    res.render('index', {products,admin:false,user});   //admin verificartion result dummy backend 
+    console.log(products)
+    res.render('index', {products,admin:false,user,featuredproduct:products[0]});   //admin verificartion result dummy backend 
   })
        
 });
 router.get('/login',(req,res)=>{
-  if(req.session.loggedIn){
+  if(req.session.loggedIn){ 
     res.redirect('/')
   }else{
     res.render('user/login',{err:req.session.loginErr})
@@ -38,7 +47,7 @@ router.post('/signup',(req,res)=>{
     console.log(response);
     if(response.status){
     req.session.loggedIn=true
-    req.session.user=response.userdata
+    req.session.user=response.user
     res.redirect('/')
   }else{
     req.session.loggedIn=false;
@@ -60,6 +69,7 @@ router.post('/login',(req,res)=>{
     else if(response.status){
       req.session.loggedIn=true
       req.session.user=response.user
+      console.log(req.session.user)
       res.redirect('/')
     }else{
       req.session.loginErr=true
@@ -82,7 +92,7 @@ router.get('/products/:id',async (req,res)=>{
   
   })
 
-router.post('/products/new-comment/',(req,res)=>{
+router.post('/products/new-comment/',usercheck,(req,res)=>{
   let id= req.query.id
   let comment=req.body
   comment.id=id
@@ -93,6 +103,25 @@ router.post('/products/new-comment/',(req,res)=>{
     res.redirect(`/products/`)
   })
   
+})
+router.get('/cart',usercheck,async (req,res)=>{
+  let cart_products_id = req.session.user.Cart
+  let cart_products = await productHelper.getCartProducts(req.session.user._id)
+  // __SLOW__
+  // for (let index = 0; index < cart_products_id.length; index++) {
+  //   productHelper.findProducts(cart_products_id[index].id).then((response)=>{
+  //     response.Quantity=cart_products_id[index].Quantity
+  //     cart_products.push(response)
+  //   })
+  // console.log(cart_products)
+  // }
+  res.render('user/cart',{user:req.session.user,cart_products})
+})
+router.get('/addtocart/:id',usercheck,async(req,res)=>{
+  await userHelper.addToCart(req.params.id,req.session.user._id)
+  res.redirect('/')
+  
+
 })
 
 
