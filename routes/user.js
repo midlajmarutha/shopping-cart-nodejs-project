@@ -105,7 +105,7 @@ router.post('/products/new-comment/',usercheck,(req,res)=>{
   
 })
 router.get('/cart',usercheck,async (req,res)=>{
-  let cart_products_id = req.session.user.Cart
+  
   let cart_products = await productHelper.getCartProducts(req.session.user._id)
   // __SLOW__
   // for (let index = 0; index < cart_products_id.length; index++) {

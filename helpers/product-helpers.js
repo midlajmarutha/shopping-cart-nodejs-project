@@ -67,7 +67,7 @@ module.exports={
         })
     },
     getCartProducts:(userid)=>{
-        console.log(userid)
+       
         return new Promise (async(resolve,reject)=>{
             let cart_products = await db.get().collection(collections.USER_COLLECTION).aggregate([
                 {
@@ -89,7 +89,7 @@ module.exports={
                     }
                 }
             ]).toArray()
-            console.log(cart_products)
+            resolve(cart_products[0].cartItems)
         })
     }
    ///getComments:(proid)=>{
